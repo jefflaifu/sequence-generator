@@ -1,0 +1,45 @@
+# maven ignore
+target/
+*.jar
+*.war
+*.zip
+*.tar
+*.tar.gz
+pom.xml.versionsBackup
+
+# eclipse ignore
+.settings/
+.project
+.classpath
+
+# idea ignore
+.idea/
+*.ipr
+*.iml
+*.iws
+
+# temp ignore
+*.log
+*.cache
+*.diff
+*.patch
+*.tmp
+*.java~
+*.properties~
+*.xml~
+
+# system ignore
+.DS_Store
+Thumbs.db
+
+# gradle output
+build/
+.gradleBuild/
+.gradle/
+gradle/
+app/service/src/main/mappergenerator/generate/
+
+# jacoco ignore
+jacoco.exec
+jacoco-it.exec
+/bin/
