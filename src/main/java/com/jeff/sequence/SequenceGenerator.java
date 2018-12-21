@@ -1,17 +1,15 @@
 package com.jeff.sequence;
 
+import com.jeff.sequence.dao.DBHelper;
+import org.springframework.beans.factory.InitializingBean;
+
+import javax.sql.DataSource;
 import java.sql.SQLException;
 import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.ArrayBlockingQueue;
-
-import javax.sql.DataSource;
-
-import org.springframework.beans.factory.InitializingBean;
-
-import com.jeff.sequence.dao.DBHelper;
 
 /**
  *    流水号生成器，可以生成指定格式的流水号，并且最后一部分为序列。目前支持mysql数据库，并且可以支持
@@ -31,6 +29,8 @@ public class SequenceGenerator implements InitializingBean {
 	 * java.text.MessageFormat的格式化文本
 	 */
 	private String pattern;
+
+	private boolean dailyCutoff = false;
 
 	/**
 	 * 序列名称
@@ -56,6 +56,10 @@ public class SequenceGenerator implements InitializingBean {
 	private DBHelper dbHelper;
 
 	private ArrayBlockingQueue<Long> queue ;
+
+	public void setDailyCutoff(boolean dailyCutoff) {
+		this.dailyCutoff = dailyCutoff;
+	}
 
 	public void setPattern(String pattern) {
 		this.pattern = pattern;
@@ -87,7 +91,7 @@ public class SequenceGenerator implements InitializingBean {
 
 	@Override
 	public void afterPropertiesSet() throws Exception {
-		this.dbHelper = new DBHelper(dataSource);
+		this.dbHelper = new DBHelper(dataSource, dailyCutoff);
 		queue = new ArrayBlockingQueue<Long>(cache+1);
 
 		// 建表
